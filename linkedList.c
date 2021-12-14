@@ -1,20 +1,20 @@
 #include "linkedList.h"
 
-int compare_string(ListNode node1, ListNode node2){
+static int compare_string(ListNode node1, ListNode node2){
     return strcmp(node1->data, node2->data);
 }
 
-int compare_ulong(ListNode node1, ListNode node2){
+static int compare_ulong(ListNode node1, ListNode node2){
     return 1 ? node1->data > node2->data :
           -1 ? node1->data < node2->data :
            0;
 }
 
-int compare_pointer(ListNode node1, ListNode node2){
+static int compare_pointer(ListNode node1, ListNode node2){
     return 0;
 }
 
-CompareFunc assignCompare(ListMode mode){
+static CompareFunc assignCompare(ListMode mode){
     switch (mode)
     {
     case LIST_STRING:

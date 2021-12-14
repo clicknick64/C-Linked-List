@@ -29,13 +29,6 @@ typedef struct List{
     ListMode mode;
 } *List;
 
-int compare_string(ListNode, ListNode);
-int compare_pointer(ListNode, ListNode);
-int compare_ulong(ListNode, ListNode);
-
-CompareFunc assignCompare(ListMode mode);
-
-
 /*
 LIST_STRING
 LIST_POINTER

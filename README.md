@@ -5,6 +5,7 @@ This library's list can save:
 - Pointers
 - Strings
 - Unsigned long ints
+
 Using included compare functions
 
 ## Functions

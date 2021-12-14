@@ -1,23 +1,28 @@
 #include "linkedList.h"
 
-String get_key_string(ListNode node)
-{
-    return (String)(node->data);
+int compare_string(ListNode node1, ListNode node2){
+    return strcmp(node1->data, node2->data);
 }
 
-String get_key_pointer(ListNode node)
-{
-    return NULL;
+int compare_long(ListNode node1, ListNode node2){
+    return 1 ? node1->data > node2->data :
+          -1 ? node1->data < node2->data :
+           0;
 }
 
-GetKeyFunc assignGetKey(ListMode mode)
-{
+int compare_pointer(ListNode node1, ListNode node2){
+    return 0;
+}
+
+CompareFunc assignCompare(ListMode mode){
     switch (mode)
     {
     case LIST_STRING:
-        return get_key_string;
+        return compare_string;
     case LIST_POINTER:
-        return get_key_pointer;
+        return compare_pointer;
+    case LIST_LONG:
+        return compare_long;
     }
 
     printf("ERROR: Not able to resolve type: %c\n", mode);
@@ -27,9 +32,10 @@ GetKeyFunc assignGetKey(ListMode mode)
 List List_Create(char mode)
 {
     List list = malloc(sizeof(*list));
-    list->getKey = assignGetKey(mode);
+    list->compare = assignCompare(mode);
     list->head = NULL;
     list->size = 0;
+    list->mode = mode;
     return list;
 }
 
@@ -45,10 +51,13 @@ void List_Insert(List list, void *data)
 ListNode List_Search(List list, void *value)
 {
     ListNode node = list->head;
+    ListNode dummy;
+    dummy->data = value;
+
     while (node != NULL)
     {
 
-        if (!strcmp((String)value, list->getKey(node)))
+        if (!list->compare(dummy, node))
             return node;
         node = node->next;
     }
@@ -66,7 +75,10 @@ void List_Print(List list)
     int i = 0;
     while (node != NULL)
     {
-        printf("(%d) %s\n", i, list->getKey(node));
+        if (list->mode == LIST_STRING)
+            printf("(%d) %s\n", i, (String)node->data);
+        else if (list->mode == LIST_LONG)
+            printf("(%d) %ld\n", i, (long)node->data);
         node = node->next;
         i++;
     }
@@ -102,14 +114,14 @@ void List_Insert_Sorted(List list, void *data)
     ListNode node = malloc(sizeof(*node));
     node->data = data;
     ListNode current;
-    if (list->head == NULL || strcmp(list->getKey(list->head), list->getKey(node)) > 0)
+    if (list->head == NULL || list->compare(list->head, node) > 0)
     {
         node->next = list->head;
         list->head = node;
         return;
     }
     current = list->head;
-    while (current->next != NULL && strcmp(list->getKey(current->next), list->getKey(node)) < 0)
+    while (current->next != NULL && list->compare(current->next, node) < 0)
     {
         current = current->next;
     }
@@ -117,13 +129,16 @@ void List_Insert_Sorted(List list, void *data)
     current->next = node;
 }
 
-int List_Index(List list, String key)
+int List_Index(List list, void* key)
 {
     ListNode node = list->head;
     int i = 0;
+    ListNode dummy;
+    dummy->data = key;
+
     while (node != NULL)
     {
-        if (!strcmp(list->getKey(node), (String)key))
+        if (!list->compare(node, dummy))
         {
             return i;
         }

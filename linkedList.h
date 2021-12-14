@@ -6,7 +6,8 @@
 
 typedef enum {
     LIST_STRING,
-    LIST_POINTER
+    LIST_POINTER,
+    LIST_LONG
 } ListMode;
 
 typedef struct ListNode{
@@ -14,25 +15,31 @@ typedef struct ListNode{
     struct ListNode *next;
 } *ListNode;
 
-typedef char* String;
-typedef String (*GetKeyFunc)(ListNode);
 typedef char bool;
+typedef char* String;
+
+typedef void* (*GetKeyFunc)(ListNode);
+typedef int (*CompareFunc)(ListNode, ListNode);
+
 
 typedef struct List{
-    GetKeyFunc getKey;
+    CompareFunc compare;
     ListNode head;
     unsigned int size;
+    ListMode mode;
 } *List;
 
-String get_key_string(ListNode);
-String get_key_pointer(ListNode);
+int compare_string(ListNode, ListNode);
+int compare_pointer(ListNode, ListNode);
+int compare_long(ListNode, ListNode);
 
-GetKeyFunc assignGetKey(ListMode mode);
+CompareFunc assignCompare(ListMode mode);
 
 
 /*
 LIST_STRING
 LIST_POINTER
+LIST_LONG
 */
 List List_Create(char mode);
 void List_Insert(List list, void *data);
@@ -47,7 +54,7 @@ void List_Insert_Sorted(List list, void *data);
 /*
 Returns index of key, -1 if not in list
 */
-int List_Index(List list, String key);
+int List_Index(List list, void* key);
 void *List_Pop(List list);
 ListNode List_At(List list, int index);
 int List_Size(List list);

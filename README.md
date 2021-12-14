@@ -1,5 +1,12 @@
 # C Linked List
 
+## What is special
+This library's list can save:
+- Pointers
+- Strings
+- Unsigned long ints
+Using included compare functions
+
 ## Functions
 
 - **Create an empty list:** List_Create \
@@ -73,4 +80,25 @@ List first time:
 List second time:
 (0) Hello
 Popped item: world
+```
+
+## Different types
+
+```c
+#include "linkedList.h"
+
+int main(){
+    List list1 = List_Create(LIST_LONG);
+    List_Insert(list1, 5);
+    List_Print(list1);
+
+    List list2 = List_Create(LIST_STRING);
+    List_Insert(list2, "Hello");
+    List_Print(list2);
+}
+```
+Output:
+```
+(0) 5
+(0) Hello
 ```

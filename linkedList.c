@@ -4,7 +4,7 @@ int compare_string(ListNode node1, ListNode node2){
     return strcmp(node1->data, node2->data);
 }
 
-int compare_long(ListNode node1, ListNode node2){
+int compare_ulong(ListNode node1, ListNode node2){
     return 1 ? node1->data > node2->data :
           -1 ? node1->data < node2->data :
            0;
@@ -21,8 +21,8 @@ CompareFunc assignCompare(ListMode mode){
         return compare_string;
     case LIST_POINTER:
         return compare_pointer;
-    case LIST_LONG:
-        return compare_long;
+    case LIST_ULONG:
+        return compare_ulong;
     }
 
     printf("ERROR: Not able to resolve type: %c\n", mode);
@@ -77,8 +77,8 @@ void List_Print(List list)
     {
         if (list->mode == LIST_STRING)
             printf("(%d) %s\n", i, (String)node->data);
-        else if (list->mode == LIST_LONG)
-            printf("(%d) %ld\n", i, (long)node->data);
+        else if (list->mode == LIST_ULONG)
+            printf("(%d) %ld\n", i, (unsigned long)node->data);
         node = node->next;
         i++;
     }

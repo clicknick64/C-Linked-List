@@ -7,7 +7,7 @@
 typedef enum {
     LIST_STRING,
     LIST_POINTER,
-    LIST_LONG
+    LIST_ULONG
 } ListMode;
 
 typedef struct ListNode{
@@ -31,7 +31,7 @@ typedef struct List{
 
 int compare_string(ListNode, ListNode);
 int compare_pointer(ListNode, ListNode);
-int compare_long(ListNode, ListNode);
+int compare_ulong(ListNode, ListNode);
 
 CompareFunc assignCompare(ListMode mode);
 
@@ -39,7 +39,7 @@ CompareFunc assignCompare(ListMode mode);
 /*
 LIST_STRING
 LIST_POINTER
-LIST_LONG
+LIST_ULONG
 */
 List List_Create(char mode);
 void List_Insert(List list, void *data);
